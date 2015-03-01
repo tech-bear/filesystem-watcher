@@ -9,6 +9,8 @@ public class Main {
         // write your code here
         System.out.println("Hello world");
 
+        ConfigParser parser = new ConfigParser("watcher-properties.xml");
+
         try {
             WatchService watcher = FileSystems.getDefault().newWatchService();
             Path p = Paths.get("C:\\");
