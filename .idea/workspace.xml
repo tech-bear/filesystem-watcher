@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="bf836684-2638-459e-9f94-86ffddba0cb5" name="Default" comment="First version completed. Hardcoded to C: and not recursive.">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/jordan/filesystemwatcher/watcher-properties.xml" />
+    <list default="true" id="bf836684-2638-459e-9f94-86ffddba0cb5" name="Default" comment="Added config XML file with ideal format.">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/jordan/filesystemwatcher/Main.java" afterPath="$PROJECT_DIR$/src/jordan/filesystemwatcher/Main.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/jordan/filesystemwatcher/watcher-properties.xml" afterPath="$PROJECT_DIR$/src/jordan/filesystemwatcher/watcher-properties.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="filesystem-watcher.iws" />
@@ -33,8 +33,8 @@
       <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/jordan/filesystemwatcher/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.085427135" vertical-offset="0" max-vertical-offset="1649">
-              <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.34170854" vertical-offset="0" max-vertical-offset="1615">
+              <caret line="8" column="31" selection-start-line="8" selection-start-column="31" selection-end-line="8" selection-end-column="31" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -45,18 +45,8 @@
       <file leaf-file-name="watcher-properties.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/jordan/filesystemwatcher/watcher-properties.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="136">
-              <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Watchable.java" pinned="false" current-in-tab="false">
-        <entry file="jar://C:/Program Files/Java/jdk1.8.0_31/src.zip!/java/nio/file/Watchable.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1383" max-vertical-offset="1870">
-              <caret line="124" column="58" selection-start-line="124" selection-start-column="58" selection-end-line="124" selection-end-column="58" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="221">
+              <caret line="4" column="70" selection-start-line="4" selection-start-column="70" selection-end-line="4" selection-end-column="70" />
               <folding />
             </state>
           </provider>
@@ -65,13 +55,18 @@
     </leaf>
   </component>
   <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="jordan" />
+      </list>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/jordan/filesystemwatcher/Main.java" />
         <option value="$PROJECT_DIR$/src/jordan/filesystemwatcher/watcher-properties.xml" />
+        <option value="$PROJECT_DIR$/src/jordan/filesystemwatcher/Main.java" />
       </list>
     </option>
   </component>
@@ -459,12 +454,19 @@
       <option name="number" value="Default" />
       <updated>1425172880303</updated>
       <workItem from="1425172884761" duration="341000" />
-      <workItem from="1425173788444" duration="5781000" />
+      <workItem from="1425173788444" duration="7408000" />
     </task>
+    <task id="LOCAL-00001" summary="First version completed. Hardcoded to C: and not recursive.">
+      <created>1425180218304</created>
+      <option name="number" value="00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1425180218304</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6122000" />
+    <option name="totallyTimeSpent" value="7749000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -515,7 +517,8 @@
       <TodoPanelSettings />
     </option>
     <MESSAGE value="First version completed. Hardcoded to C: and not recursive." />
-    <option name="LAST_COMMIT_MESSAGE" value="First version completed. Hardcoded to C: and not recursive." />
+    <MESSAGE value="Added config XML file with ideal format." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added config XML file with ideal format." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -534,9 +537,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/LICENSE">
+      <provider editor-type-id="com.intellij.database.editor.CsvTableFileEditorProvider">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.3125" vertical-offset="1587" max-vertical-offset="2924">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_31/src.zip!/java/nio/file/Watchable.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1383" max-vertical-offset="1870">
+        <state vertical-scroll-proportion="0.8675325" vertical-offset="1383" max-vertical-offset="1870">
           <caret line="124" column="58" selection-start-line="124" selection-start-column="58" selection-end-line="124" selection-end-column="58" />
           <folding />
         </state>
@@ -544,16 +558,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/jordan/filesystemwatcher/watcher-properties.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="136">
-          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="221">
+          <caret line="4" column="70" selection-start-line="4" selection-start-column="70" selection-end-line="4" selection-end-column="70" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/jordan/filesystemwatcher/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.085427135" vertical-offset="0" max-vertical-offset="1649">
-          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.34170854" vertical-offset="0" max-vertical-offset="1615">
+          <caret line="8" column="31" selection-start-line="8" selection-start-column="31" selection-end-line="8" selection-end-column="31" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

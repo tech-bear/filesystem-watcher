@@ -1,7 +1,5 @@
 package jordan.filesystemwatcher;
 
-import java.io.File;
-import java.io.IOException;
 import java.nio.file.*;
 import static java.nio.file.StandardWatchEventKinds.*;
 
@@ -21,7 +19,7 @@ public class Main {
                     ENTRY_DELETE );
 
             while (true) {
-                WatchKey k = null;
+                WatchKey k;
                 try {
                     k = watcher.poll();
                     if (k == null) {

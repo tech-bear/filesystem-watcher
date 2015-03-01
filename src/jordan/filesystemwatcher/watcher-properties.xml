@@ -1,3 +1,8 @@
 <watcher>
-
+    <watch directory="C:" recursive="true">
+        <filter extention="*">
+            <command>echo filename $file detected</command>
+            <command>echo filename $file detected >> log.txt</command>
+        </filter>
+    </watch>
 </watcher>
