@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
-<watcher>
-    <watch directory="C:" recursive="true">
+<watchers>
+    <watch directory="C:\Users\Jordan\Downloads" recursive="true">
         <filter extention="*">
             <command>echo filename $file detected</command>
             <command>echo filename $file detected >> log.txt</command>
         </filter>
     </watch>
-</watcher>
+</watchers>
