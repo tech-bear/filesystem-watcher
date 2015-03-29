@@ -1,5 +1,7 @@
 package jordan.filesystemwatcher;
 
+import jordan.filesystemwatcher.config.model.WatcherOptions;
+
 import java.io.File;
 import java.nio.file.*;
 import java.util.Collection;
@@ -21,7 +23,7 @@ public class Main {
 
         watcherServices = new LinkedList<>();
 
-        for (ConfigParser.WatcherOptions watcher : parser.getWatchers()) {
+        for (WatcherOptions watcher : parser.getWatchers()) {
             try {
                 // todo: implement recursive check here - if it's a recursive path, need to iterate down through
 

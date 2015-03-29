@@ -9,6 +9,9 @@ import javax.xml.parsers.SAXParserFactory;
 import java.util.Collection;
 import java.util.LinkedList;
 
+import jordan.filesystemwatcher.config.model.FilterOptions;
+import jordan.filesystemwatcher.config.model.WatcherOptions;
+
 /**
  * Created by Jordan on 2/28/2015.
  */
@@ -18,73 +21,6 @@ public class ConfigParser extends DefaultHandler {
     private WatcherOptions tmpWatcher;
     private FilterOptions  tmpFilter;
     private String         tmpCommand;
-
-    class FilterOptions {
-        private String extention;
-
-        public String getExtention() {
-            return extention;
-        }
-
-        private Collection<String> commands;
-
-        public Collection<String> getCommands() {
-            return commands;
-        }
-
-        public FilterOptions() {
-            commands = new LinkedList<>();
-        }
-
-        @Override
-        public String toString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append("Filter:\n");
-            sb.append("\textention = " + extention + "\n");
-            sb.append("\tCommands:" + "\n");
-            for(String com : commands) {
-                sb.append("\t\t" + "command = " + com + "\n");
-            }
-            return sb.toString();
-        }
-    }
-
-    class WatcherOptions {
-        private String  directory;
-
-        public String getDirectory() {
-            return directory;
-        }
-
-        private boolean recursive;
-
-        public boolean isRecursive() {
-            return recursive;
-        }
-
-        private Collection<FilterOptions> filters;
-
-        public Collection<FilterOptions> getFilters() {
-            return filters;
-        }
-
-        public WatcherOptions() {
-            filters = new LinkedList<>();
-        }
-
-        @Override
-        public String toString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append("Watcher:\n");
-            sb.append("\tdirectory = " + directory + "\n");
-            sb.append("\trecursive = " + recursive + "\n");
-            sb.append("\tfilters:\n");
-            for(FilterOptions filter : filters) {
-                sb.append("\t\t" + filter.toString() + "\n");
-            }
-            return sb.toString();
-        }
-    }
 
     private Collection<WatcherOptions> watchers = null;
 
@@ -123,13 +59,13 @@ public class ConfigParser extends DefaultHandler {
 
         if(qName.equalsIgnoreCase("Watch")) {
             tmpWatcher = new WatcherOptions();
-            tmpWatcher.directory = attributes.getValue("directory");
-            tmpWatcher.recursive = Boolean.parseBoolean(attributes.getValue("recursive"));
+            tmpWatcher.setDirectory(attributes.getValue("directory"));
+            tmpWatcher.setRecursive(Boolean.parseBoolean(attributes.getValue("recursive")));
         }
 
         if(qName.equalsIgnoreCase("Filter")) {
             tmpFilter = new FilterOptions();
-            tmpFilter.extention = attributes.getValue("extention");
+            tmpFilter.setExtention(attributes.getValue("extention"));
         }
     }
 
@@ -148,11 +84,11 @@ public class ConfigParser extends DefaultHandler {
             watchers.add(tmpWatcher);
         }
         else if(qName.equalsIgnoreCase("Filter")) {
-            tmpWatcher.filters.add(tmpFilter);
+            tmpWatcher.getFilters().add(tmpFilter);
         }
         else if(qName.equalsIgnoreCase("Command")) {
             tmpCommand = tempVal;
-            tmpFilter.commands.add(tmpCommand);
+            tmpFilter.getCommands().add(tmpCommand);
         }
         else {
             System.out.println("WARN - tag '" + qName + "' not parsed - not implemented!");
