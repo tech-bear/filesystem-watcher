@@ -1,4 +1,4 @@
-package jordan.filesystemwatcher;
+package jordan.filesystemwatcher.config;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -20,7 +20,7 @@ public class ConfigParser extends DefaultHandler {
 
     private WatcherOptions tmpWatcher;
     private FilterOptions  tmpFilter;
-    private String         tmpCommand;
+    String         tmpCommand;
 
     private Collection<WatcherOptions> watchers = null;
 
@@ -34,14 +34,14 @@ public class ConfigParser extends DefaultHandler {
         }
     }
 
-    protected boolean parse(String configFile) {
+    private boolean parse(String configFile) {
         try {
             SAXParserFactory spf = SAXParserFactory.newInstance();
             SAXParser parser = spf.newSAXParser();
             parser.parse(configFile, this);
         }
         catch(Exception e) {
-            System.err.println("ConfigParser.parse: exception occured! " + e.getMessage());
+            System.err.println("ConfigParser.parse: exception occurred! " + e.getMessage());
             return false;
         }
         return true;
@@ -54,7 +54,7 @@ public class ConfigParser extends DefaultHandler {
         tempVal = "";
 
         if(qName.equalsIgnoreCase("Watchers")) {
-            watchers = new LinkedList<WatcherOptions>();
+            watchers = new LinkedList<>();
         }
 
         if(qName.equalsIgnoreCase("Watch")) {

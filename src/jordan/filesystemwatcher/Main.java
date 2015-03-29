@@ -1,5 +1,6 @@
 package jordan.filesystemwatcher;
 
+import jordan.filesystemwatcher.config.ConfigParser;
 import jordan.filesystemwatcher.config.model.WatcherOptions;
 
 import java.io.File;
@@ -9,9 +10,9 @@ import java.util.LinkedList;
 
 import static java.nio.file.StandardWatchEventKinds.*;
 
-public class Main {
+class Main {
 
-    private static Collection<WatchService> watcherServices;
+    static Collection<WatchService> watcherServices;
 
     public static void main(String[] args) {
         // write your code here
@@ -29,7 +30,7 @@ public class Main {
 
                 WatchService watcherService = FileSystems.getDefault().newWatchService();
                 Path p = Paths.get(new File(watcher.getDirectory()).getAbsolutePath());
-                WatchKey key = p.register(
+                p.register(
                         watcherService,
                         ENTRY_CREATE,
                         ENTRY_MODIFY,
@@ -58,6 +59,7 @@ public class Main {
 
                             // The filename is the
                             // context of the event.
+                            @SuppressWarnings("unchecked")
                             WatchEvent<Path> ev = (WatchEvent<Path>) event;
                             Path filename = ev.context();
 

@@ -27,7 +27,7 @@ public class WatcherOptions {
         return recursive;
     }
 
-    private Collection<FilterOptions> filters;
+    private final Collection<FilterOptions> filters;
 
     public Collection<FilterOptions> getFilters() {
         return filters;
@@ -41,11 +41,17 @@ public class WatcherOptions {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Watcher:\n");
-        sb.append("\tdirectory = " + directory + "\n");
-        sb.append("\trecursive = " + recursive + "\n");
+        sb.append("\tdirectory = ");
+        sb.append(directory);
+        sb.append("\n");
+        sb.append("\trecursive = ");
+        sb.append(recursive);
+        sb.append("\n");
         sb.append("\tfilters:\n");
         for(FilterOptions filter : filters) {
-            sb.append("\t\t" + filter.toString() + "\n");
+            sb.append("\t\t");
+            sb.append(filter.toString());
+            sb.append("\n");
         }
         return sb.toString();
     }

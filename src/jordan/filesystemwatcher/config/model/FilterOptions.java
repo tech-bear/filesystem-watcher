@@ -17,7 +17,7 @@ public class FilterOptions {
         return extention;
     }
 
-    private Collection<String> commands;
+    private final Collection<String> commands;
 
     public Collection<String> getCommands() {
         return commands;
@@ -31,10 +31,16 @@ public class FilterOptions {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Filter:\n");
-        sb.append("\textention = " + extention + "\n");
-        sb.append("\tCommands:" + "\n");
+        sb.append("\textention = ");
+        sb.append(extention);
+        sb.append("\n");
+        sb.append("\tCommands:");
+        sb.append("\n");
         for(String com : commands) {
-            sb.append("\t\t" + "command = " + com + "\n");
+            sb.append("\t\t");
+            sb.append("command = ");
+            sb.append(com);
+            sb.append("\n");
         }
         return sb.toString();
     }
