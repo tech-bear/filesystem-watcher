@@ -1,0 +1,6 @@
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>jordan.projects.util</groupId>
+    <artifactId>FilesystemWatcher</artifactId>
+    <version>1.0</version>
+</project>
