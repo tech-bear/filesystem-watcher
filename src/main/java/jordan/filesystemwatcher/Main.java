@@ -16,7 +16,7 @@ class Main {
 
     public static void main(String[] args) {
 
-        ConfigParser parser = new ConfigParser("src/jordan/filesystemwatcher/watcher-properties.xml");
+        ConfigParser parser = new ConfigParser("src/main/resources/watcher-properties.xml");
 
         System.out.println("Config: " + parser.toString());
 
