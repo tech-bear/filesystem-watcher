@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <!-- watchers element -->
+    <xs:element name="watchers">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="watch" minOccurs="1" maxOccurs="unbounded" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- watch element -->
+    <xs:element name="watch">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="filter" minOccurs="1" maxOccurs="unbounded" />
+            </xs:sequence>
+            <xs:attributeGroup ref="watch-attributes" />
+        </xs:complexType>
+    </xs:element>
+
+    <!-- watch attributes -->
+    <xs:attributeGroup name="watch-attributes">
+        <xs:attribute name="directory" type="xs:string"  use="required"  />
+        <xs:attribute name="recursive" type="xs:boolean" use="required" />
+    </xs:attributeGroup>
+
+    <!-- filter element -->
+    <xs:element name="filter">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="command" minOccurs="1" maxOccurs="unbounded" />
+            </xs:sequence>
+            <xs:attributeGroup ref="filter-attributes" />
+        </xs:complexType>
+    </xs:element>
+
+    <!-- filter attributes -->
+    <xs:attributeGroup name="filter-attributes">
+        <xs:attribute name="extension" type="xs:string" use="required" />
+        <!-- valid types: all | create | delete | update. If no value given, all is assumed -->
+        <xs:attribute name="type" type="filterType" use="optional" />
+        <!-- time to wait before executing commands - this is in MILLISECONDS unless otherwise specified -->
+        <xs:attribute name="timer-val" type="xs:unsignedLong" use="required" />
+    </xs:attributeGroup>
+
+    <xs:simpleType name="filterType">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="all" />
+            <xs:pattern value="create" />
+            <xs:pattern value="delete" />
+            <xs:pattern value="delete" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- command element -->
+    <!-- $file will be replaced with the absolute file URI -->
+    <xs:element name="command" type="xs:string" />
+
+</xs:schema> 

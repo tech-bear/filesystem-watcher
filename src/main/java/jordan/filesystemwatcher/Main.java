@@ -1,7 +1,7 @@
 package jordan.filesystemwatcher;
 
 import jordan.filesystemwatcher.config.ConfigParser;
-import jordan.filesystemwatcher.config.model.WatcherOptions;
+import jordan.filesystemwatcher.config.xml.Watch;
 
 import java.io.File;
 import java.nio.file.*;
@@ -18,11 +18,14 @@ class Main {
 
         ConfigParser parser = new ConfigParser("src/main/resources/watcher-properties.xml");
 
+        FilesystemWatcher w = new FilesystemWatcher();
+        w.configure(parser);
+
         System.out.println("Config: " + parser.toString());
 
         watcherServices = new LinkedList<>();
 
-        for (WatcherOptions watcher : parser.getWatchers()) {
+        for (Watch watcher : parser.getWatchers()) {
             try {
                 // todo: implement recursive check here - if it's a recursive path, need to iterate down through
 

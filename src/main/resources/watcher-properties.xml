@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <watchers>
-    <watch directory="C:\Users\Jordan\Downloads" recursive="true">
+    <watch directory="C:\Users\Jordan-admin\Downloads" recursive="true">
         <!-- with filter: the optional parameters are:
             timeout (milliseconds)
             timeout-seconds (seconds)
