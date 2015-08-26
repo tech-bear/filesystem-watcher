@@ -50,7 +50,7 @@
             <xs:pattern value="all" />
             <xs:pattern value="create" />
             <xs:pattern value="delete" />
-            <xs:pattern value="delete" />
+            <xs:pattern value="update" />
         </xs:restriction>
     </xs:simpleType>
 

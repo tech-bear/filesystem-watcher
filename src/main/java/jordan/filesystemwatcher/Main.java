@@ -20,6 +20,7 @@ class Main {
 
         FilesystemWatcher w = new FilesystemWatcher();
         w.configure(parser);
+        w.waitForWatchers();
 
         System.out.println("Config: " + parser.toString());
 
@@ -65,7 +66,7 @@ class Main {
                             Path filename = ev.context();
 
 
-                            // todo: this is where we should filter by extention, then handle appropriately
+                            // todo: this is where we should filter by extension, then handle appropriately
                             System.out.println(kind.name() + "\t: " + filename);
 /*
                         // Verify that the new
