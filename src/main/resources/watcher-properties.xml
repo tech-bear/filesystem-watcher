@@ -16,11 +16,11 @@
             You can use these in any combination needed - the program is going to do the right thing
             if type is not specified, type="all" is assumed
             -->
-        <filter extension="*" type="update" timeout-seconds="">
+        <filter extension="*" type="update" timer-val="50000">
             <command>echo filename $file detected</command>
             <command>echo filename $file detected >> log.txt</command>
         </filter>
-        <filter extension="*.txt" type="create" timeout-seconds="">
+        <filter extension="*.txt" type="create" timer-val="250">
             <command>echo filename $file created - MIME type TXT</command>
         </filter>
     </watch>
