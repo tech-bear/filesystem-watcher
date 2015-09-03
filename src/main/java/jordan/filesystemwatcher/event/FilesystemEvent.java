@@ -41,7 +41,8 @@ abstract public class FilesystemEvent {
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("FilesystemEvent: ");
+        sb.append(this.getClass().getName());
+        sb.append(": ");
         sb.append("filename = ").append(getPath());
         sb.append(" | ").append("timestamp = ").append(getTimestamp());
         sb.append(" | ").append("event type = ").append(getEventType());

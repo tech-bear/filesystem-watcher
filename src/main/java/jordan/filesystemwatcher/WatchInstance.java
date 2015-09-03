@@ -3,20 +3,26 @@ package jordan.filesystemwatcher;
 import jordan.filesystemwatcher.config.xml.Filter;
 import jordan.filesystemwatcher.config.xml.Watch;
 import jordan.filesystemwatcher.event.FilesystemEvent;
+import jordan.filesystemwatcher.event.FilesystemEventGenerator;
+import jordan.filesystemwatcher.event.FilesystemEventListener;
 import jordan.filesystemwatcher.event.FilesystemEventType;
 
 import java.io.IOException;
 import java.nio.file.*;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * Created by Jordan-admin on 8/25/2015.
  */
-public class WatchInstance implements Runnable {
+public class WatchInstance implements Runnable, FilesystemEventGenerator<FilesystemEvent> {
     WatchService watchSvc;
     Watch watch;
     Path path;
     Filter filter;
     boolean running = false;
+
+    Set<FilesystemEventListener<FilesystemEvent>> eventListeners;
 
     static final int MAX_SLEEP_INTERVAL = 5 * 1000;
 
@@ -25,6 +31,8 @@ public class WatchInstance implements Runnable {
         this.watch = watch;
         this.path = path;
         this.filter = filter;
+
+        eventListeners = new LinkedHashSet<>();
 
         for (FilesystemEventType type : FilesystemEventType.fromString(filter.getType())) {
             this.path.register(watchSvc, type.getEventKind());
@@ -53,6 +61,26 @@ public class WatchInstance implements Runnable {
 
     public void cancel() {
         running = false;
+    }
+
+    @Override
+    public void addEventListener(FilesystemEventListener<FilesystemEvent> listener) {
+        eventListeners.add(listener);
+    }
+
+    @Override
+    public void removeEventListener(FilesystemEventListener<FilesystemEvent> listener) {
+        eventListeners.remove(listener);
+    }
+
+    @Override
+    public int countEventListeners() {
+        return eventListeners.size();
+    }
+
+    @Override
+    public void broadcastEvent(FilesystemEvent event) {
+        new Thread(() -> eventListeners.forEach(listener -> listener.handleEvent(event))).start();
     }
 
     @Override
@@ -86,38 +114,27 @@ public class WatchInstance implements Runnable {
                     // context of the event.
                     @SuppressWarnings("unchecked")
                     WatchEvent<Path> ev = (WatchEvent<Path>) event;
-                    Path filename = ev.context();
 
-                    System.out.println("Creating FileSystemEvent.... " + FilesystemEvent.createFilesystemEvent(filename, this));
-                    // todo: this is where we should filter by extension, then handle appropriately
-                    System.out.println(kind.name() + "\t(" + ev.count() + ")\t: " + filename);
-/*
-                        // Verify that the new
-                        //  file is a text file.
-                        try {
-                            // Resolve the filename against the directory.
-                            // If the filename is "test" and the directory is "foo",
-                            // the resolved name is "test/foo".
-                            Path child = dir.resolve(filename);
-                            if (!Files.probeContentType(child).equals("text/plain")) {
-                                System.err.format("New file '%s'" +
-                                        " is not a plain text file.%n", filename);
-                                continue;
-                            }
-                        } catch (IOException x) {
-                            System.err.println(x);
-                            continue;
+                    Path filename = Paths.get(getPath().toAbsolutePath().toString(), ev.context().toString());
+
+                    // don't bother processing directories
+                    if(filename.toFile().isFile()) {
+                        // System.out.println("Creating FileSystemEvent.... " + FilesystemEvent.createFilesystemEvent(filename, this));
+                        // todo: this is where we should filter by extension, then handle appropriately
+                        System.out.println(kind.name() + "\t(" + ev.count() + ")\t: " + filename + " | filter: " + filter.getExtension());
+                        System.out.println("directory? " + filename.toFile().isDirectory() + " | file? " + filename.toFile().isFile());
+
+                        // if using the wildcard, all files / folders will be caught
+                        boolean triggerEvent = "*".equalsIgnoreCase(filter.getExtension());
+
+                        if (!triggerEvent) {
+                            triggerEvent = ev.context().endsWith(filter.getExtension());
                         }
 
-                        // Email the file to the
-                        //  specified email alias.
-                        System.out.format("Emailing file %s%n", filename);
-                        //Details left to reader....
+                        if (triggerEvent) {
+                            broadcastEvent(FilesystemEvent.createFilesystemEvent(filename, this));
+                        }
                     }
-*/
-                    // Reset the key -- this step is critical if you want to
-                    // receive further watch events.  If the key is no longer valid,
-                    // the directory is inaccessible so exit the loop.
                     boolean valid = k.reset();
                     if (!valid) {
                         break;

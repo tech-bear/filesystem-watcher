@@ -3,6 +3,8 @@ package jordan.filesystemwatcher;
 import jordan.filesystemwatcher.config.ConfigParser;
 import jordan.filesystemwatcher.config.xml.Filter;
 import jordan.filesystemwatcher.config.xml.Watch;
+import jordan.filesystemwatcher.event.FilesystemEvent;
+import jordan.filesystemwatcher.event.FilesystemEventListener;
 
 import java.io.File;
 import java.nio.file.DirectoryStream;
@@ -17,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by Jordan-admin on 8/24/2015.
  */
-public class FilesystemWatcher {
+public class FilesystemWatcher implements FilesystemEventListener<FilesystemEvent> {
     private ExecutorService threadGroup;
 
     public FilesystemWatcher() {
@@ -44,7 +46,10 @@ public class FilesystemWatcher {
     private int addFilter(Watch watch, Path path, Filter filter) {
         int sum = 0;
         try {
-            threadGroup.execute(new WatchInstance(watch, path, filter));
+            final WatchInstance wi = new WatchInstance(watch, path, filter);
+            wi.addEventListener(this);
+
+            threadGroup.execute(wi);
             System.out.println(path + " : adding filter " + filter.getExtension());
             sum++;
         } catch (Exception e) {
@@ -74,5 +79,10 @@ public class FilesystemWatcher {
             threadGroup.awaitTermination(Long.MAX_VALUE, TimeUnit.MILLISECONDS);
         } catch (Exception ignore) {
         }
+    }
+
+    @Override
+    public void handleEvent(FilesystemEvent event) {
+        System.out.println("received FilesystemEvent! " + event);
     }
 }

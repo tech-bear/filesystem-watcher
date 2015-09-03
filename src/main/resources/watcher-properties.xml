@@ -20,7 +20,7 @@
             <command>echo filename $file detected</command>
             <command>echo filename $file detected >> log.txt</command>
         </filter>
-        <filter extension="*.txt" type="create" timer-val="250">
+        <filter extension="txt" type="create" timer-val="250">
             <command>echo filename $file created - MIME type TXT</command>
         </filter>
     </watch>
