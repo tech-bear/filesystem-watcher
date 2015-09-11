@@ -4,14 +4,19 @@ import jordan.filesystemwatcher.config.ConfigParser;
 import jordan.filesystemwatcher.config.xml.Filter;
 import jordan.filesystemwatcher.config.xml.Watch;
 import jordan.filesystemwatcher.event.FilesystemEvent;
+import jordan.filesystemwatcher.event.FilesystemEventGenerator;
 import jordan.filesystemwatcher.event.FilesystemEventListener;
+import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 
 import java.io.File;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -19,11 +24,22 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by Jordan-admin on 8/24/2015.
  */
-public class FilesystemWatcher implements FilesystemEventListener<FilesystemEvent> {
+public class FilesystemWatcher extends Thread implements FilesystemEventGenerator<FilesystemEvent>, FilesystemEventListener<FilesystemEvent> {
     private ExecutorService threadGroup;
+    private Collection<WatchInstance> watchInstances;
+    private Collection<FilesystemEventListener<FilesystemEvent>> eventListeners;
 
     public FilesystemWatcher() {
-        threadGroup = Executors.newCachedThreadPool();
+        BasicThreadFactory threadFactory = new BasicThreadFactory.Builder()
+                .namingPattern("WatchInstance-%d")
+                .daemon(false)
+                .build();
+        threadGroup = Executors.newCachedThreadPool(threadFactory);
+
+        watchInstances = new LinkedHashSet<>();
+
+        eventListeners = new LinkedHashSet<>();
+        addEventListener(this);
     }
 
     public void configure(final ConfigParser config) {
@@ -46,10 +62,8 @@ public class FilesystemWatcher implements FilesystemEventListener<FilesystemEven
     private int addFilter(Watch watch, Path path, Filter filter) {
         int sum = 0;
         try {
-            final WatchInstance wi = new WatchInstance(watch, path, filter);
-            wi.addEventListener(this);
+            watchInstances.add(new WatchInstance(watch, path, filter));
 
-            threadGroup.execute(wi);
             System.out.println(path + " : adding filter " + filter.getExtension());
             sum++;
         } catch (Exception e) {
@@ -74,6 +88,33 @@ public class FilesystemWatcher implements FilesystemEventListener<FilesystemEven
         return sum;
     }
 
+    @Override
+    public void run() {
+        System.out.println("Starting event loop with " + countEventListeners() + " listeners");
+
+        while (!Thread.interrupted()) {
+            try {
+                threadGroup.invokeAll(watchInstances).forEach(events -> {
+                    try {
+                        if(events.get().size() > 0) {
+                            System.out.println(events.get().size() + " events to push");
+                            events.get().forEach(this::broadcastEvent);
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        // this is akin to WatchInvalidatedException being thrown
+                        System.err.println(e.getMessage());
+                        e.printStackTrace();
+                    }
+                });
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public void waitForWatchers() {
         try {
             threadGroup.awaitTermination(Long.MAX_VALUE, TimeUnit.MILLISECONDS);
@@ -84,5 +125,25 @@ public class FilesystemWatcher implements FilesystemEventListener<FilesystemEven
     @Override
     public void handleEvent(FilesystemEvent event) {
         System.out.println("received FilesystemEvent! " + event);
+    }
+
+    @Override
+    public void addEventListener(FilesystemEventListener<FilesystemEvent> listener) {
+        eventListeners.add(listener);
+    }
+
+    @Override
+    public void removeEventListener(FilesystemEventListener<FilesystemEvent> listener) {
+        eventListeners.remove(listener);
+    }
+
+    @Override
+    public int countEventListeners() {
+        return eventListeners.size();
+    }
+
+    @Override
+    public void broadcastEvent(FilesystemEvent event) {
+        eventListeners.forEach(listener -> threadGroup.execute(() -> listener.handleEvent(event)));
     }
 }
