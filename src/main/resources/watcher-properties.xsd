@@ -30,6 +30,7 @@
     <xs:element name="filter">
         <xs:complexType>
             <xs:sequence>
+                <!-- See CommandFilter.groovy for the list of variables that are substituted -->
                 <xs:element ref="command" minOccurs="1" maxOccurs="unbounded" />
             </xs:sequence>
             <xs:attributeGroup ref="filter-attributes" />

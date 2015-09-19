@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by Jordan-admin on 8/24/2015.
  */
-public class FilesystemWatcher extends Thread implements FilesystemEventGenerator<FilesystemEvent>, FilesystemEventListener<FilesystemEvent> {
+public class FilesystemWatcher extends Thread implements FilesystemEventGenerator<FilesystemEvent> {
     private ExecutorService threadGroup;
     private Collection<WatchInstance> watchInstances;
     private Collection<FilesystemEventListener<FilesystemEvent>> eventListeners;
@@ -37,9 +37,7 @@ public class FilesystemWatcher extends Thread implements FilesystemEventGenerato
         threadGroup = Executors.newCachedThreadPool(threadFactory);
 
         watchInstances = new LinkedHashSet<>();
-
         eventListeners = new LinkedHashSet<>();
-        addEventListener(this);
     }
 
     public void configure(final ConfigParser config) {
@@ -90,14 +88,13 @@ public class FilesystemWatcher extends Thread implements FilesystemEventGenerato
 
     @Override
     public void run() {
-        System.out.println("Starting event loop with " + countEventListeners() + " listeners");
+        System.out.println("FilesystemWatcher - Starting event loop with " + countEventListeners() + " listeners");
 
         while (!Thread.interrupted()) {
             try {
                 threadGroup.invokeAll(watchInstances).forEach(events -> {
                     try {
                         if(events.get().size() > 0) {
-                            System.out.println(events.get().size() + " events to push");
                             events.get().forEach(this::broadcastEvent);
                         }
                     } catch (InterruptedException e) {
@@ -120,11 +117,6 @@ public class FilesystemWatcher extends Thread implements FilesystemEventGenerato
             threadGroup.awaitTermination(Long.MAX_VALUE, TimeUnit.MILLISECONDS);
         } catch (Exception ignore) {
         }
-    }
-
-    @Override
-    public void handleEvent(FilesystemEvent event) {
-        System.out.println("received FilesystemEvent! " + event);
     }
 
     @Override

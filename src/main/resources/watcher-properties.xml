@@ -1,27 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <watchers>
     <watch directory="C:\Users\Jordan-admin\Downloads" recursive="true">
-        <!-- with filter: the optional parameters are:
-            timeout (milliseconds)
-            timeout-seconds (seconds)
-            timeout-minutes (minutes)
-            timeout-days    (days)
-            timeout-months  (months)
-            if nothing is specified, timeout=0 is implied (instant)
-
-            type="update"
-            type="create"
-            type="delete"
-            type="all" (this is the same as type="create|delete|update")
+        <!-- filter parameters:
+            (required)
+            extension
+                * - all files
+                <value> - filter by this file extension
+            timer-val - value in milliseconds to wait before command is executed
+            (optional)
+            type
+                update - files that were updated
+                create - files that were created
+                delete - files that were deleted
+                all    - all of the above (same as update|create|delete)
             You can use these in any combination needed - the program is going to do the right thing
             if type is not specified, type="all" is assumed
             -->
+        <!-- See CommandFilter.groovy for the list of variables that are substituted for commands -->
         <filter extension="*" type="update" timer-val="50000">
             <command>echo filename $file detected</command>
             <command>echo filename $file detected >> log.txt</command>
         </filter>
         <filter extension="txt" type="create" timer-val="250">
-            <command>echo filename $file created - MIME type TXT</command>
+            <command>cmd.exe echo filename $file created - MIME type TXT</command>
+            <command>notepad.exe</command>
         </filter>
     </watch>
 </watchers>
