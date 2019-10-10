@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<watchers>
+    <watch directory="C:\Users\Jordan\Downloads" recursive="true">
+        <!-- with filter: the optional parameters are:
+            timeout (milliseconds)
+            timeout-seconds (seconds)
+            timeout-minutes (minutes)
+            timeout-days    (days)
+            timeout-months  (months)
+            if nothing is specified, timeout=0 is implied (instant)
+
+            type="update"
+            type="create"
+            type="delete"
+            type="all" (this is the same as type="create|delete|update")
+            You can use these in any combination needed - the program is going to do the right thing
+            if type is not specified, type="all" is assumed
+            -->
+        <filter extention="*" type="update" timeout-seconds="">
+            <command>echo filename $file detected</command>
+            <command>echo filename $file detected >> log.txt</command>
+        </filter>
+    </watch>
+</watchers>

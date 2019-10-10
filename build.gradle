@@ -1,0 +1,16 @@
+apply plugin: 'groovy'
+
+group = 'src.jordan.filesystemwatcher'
+version = '1.0'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.codehaus.groovy:groovy:1.8.6'
+    testCompile 'junit:junit:4.12'
+}
